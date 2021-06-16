@@ -1,0 +1,207 @@
+<div class="main-wrapper">
+  <form (ngSubmit)="formSubmit()" [formGroup]="filmEditForm" class="main-form">
+    <mat-card>
+      <mat-card-content>
+        <mat-form-field>
+          <input matInput placeholder="Názov" formControlName="nazov" />
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Slovenský názov"
+            formControlName="slovenskyNazov"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Rok" formControlName="rok" type="number" min="0" />
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="imdb ID" formControlName="imdbID" />
+        </mat-form-field>
+        <h3>Režiséri:</h3>
+        <mat-card class="cards" formArrayName="reziser">
+          <mat-card
+            *ngFor="let reziserControl of reziser.controls; let i = index"
+            class="reziser"
+          >
+            <div [formGroupName]="i">
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="Krstné meno"
+                  formControlName="krstneMeno"
+                />
+              </mat-form-field>
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="Stredné meno"
+                  formControlName="stredneMeno"
+                />
+              </mat-form-field>
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="Priezvisko"
+                  formControlName="priezvisko"
+                />
+              </mat-form-field>
+            </div>
+            <mat-card-actions>
+              <button
+                type="button"
+                mat-icon-button
+                aria-label="Vymaž režiséra"
+                color="warn"
+              >
+                <mat-icon (click)="deleteReziserAt(i)">delete_forever</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+          <mat-card class="reziser">
+            <button
+              class="add-button"
+              type="button"
+              (click)="addEmptyReziser()"
+              mat-icon-button
+              aria-label="Pridaj režiséra"
+              color="primary"
+              [disabled]="reziser?.invalid"
+            >
+              <mat-icon>add</mat-icon> Pridať režiséra
+            </button>
+          </mat-card>
+        </mat-card>
+
+        <h3>Postavy:</h3>
+        <mat-card class="cards" formArrayName="postava">
+          <mat-card
+            *ngFor="let postavaControl of postava.controls; let i = index"
+            class="postava"
+          >
+            <div [formGroupName]="i">
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="Postava"
+                  formControlName="postava"
+                />
+              </mat-form-field>
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="Dôležitosť"
+                  formControlName="dolezitost"
+                />
+              </mat-form-field>
+              <mat-card formGroupName="herec">
+                <p>Herec:</p>
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Krstné meno"
+                    formControlName="krstneMeno"
+                  />
+                </mat-form-field>
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Stredné meno"
+                    formControlName="stredneMeno"
+                  />
+                </mat-form-field>
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Priezvisko"
+                    formControlName="priezvisko"
+                  />
+                </mat-form-field>
+                <mat-card-actions>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    aria-label="Vymaž postavu"
+                    color="warn"
+                  >
+                    <mat-icon (click)="deletePostavaAt(i)"
+                      >delete_forever</mat-icon
+                    >
+                  </button>
+                </mat-card-actions>
+              </mat-card>
+            </div>
+          </mat-card>
+          <mat-card class="postava">
+            <button
+              class="add-button"
+              type="button"
+              (click)="addEmptyPostava()"
+              mat-icon-button
+              aria-label="Pridaj postavu"
+              color="primary"
+              [disabled]="postava?.invalid"
+            >
+              <mat-icon>add</mat-icon> Pridat postavu
+            </button>
+          </mat-card>
+        </mat-card>
+        <h3>Poradie v rebríčkoch:</h3>
+        <mat-card formArrayName="poradieVRebricku" class="cards">
+          <mat-card *ngFor="let control of poradieVRebricku.controls; let i = index" class="rebricek">
+            <div [formGroupName]="i">
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="Rebríček"
+                  formControlName="rebricek"
+              /></mat-form-field>
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="Poradie"
+                  formControlName="poradie"
+                  type="number"
+                  min="1"
+                />
+              </mat-form-field>
+            </div>
+            <mat-card-actions>
+              <button
+                type="button"
+                mat-icon-button
+                aria-label="Vymaž rebríček"
+                color="warn"
+              >
+                <mat-icon (click)="deletePoradieVRebrickuAt(i)">delete_forever</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+          <mat-card class="rebricek">
+            <button
+              class="add-button"
+              type="button"
+              (click)="addEmptyPoradieVRebricku()"
+              mat-icon-button
+              aria-label="Pridaj rebríček"
+              color="primary"
+              [disabled]="poradieVRebricku?.invalid"
+            >
+              <mat-icon>add</mat-icon> Pridať rebríček
+            </button>
+          </mat-card>
+        </mat-card>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+          type="submit"
+          mat-raised-button
+          color="primary"
+          [disabled]="filmEditForm?.invalid"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>
